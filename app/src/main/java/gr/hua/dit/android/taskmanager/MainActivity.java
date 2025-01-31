@@ -18,14 +18,14 @@ import gr.hua.dit.android.taskmanager.R;import gr.hua.dit.android.taskmanager.Ta
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+//        recyclerAdapter = new RecyclerAdapter();
+        recyclerView = findViewById(R.id.recycler_view);
 
         Button btnAddTask = findViewById(R.id.btn_add_task);
         btnAddTask.setOnClickListener(view -> {
@@ -51,4 +51,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
+    public void setRecyclerView(RecyclerView recyclerView) {
+
+    }
 }
