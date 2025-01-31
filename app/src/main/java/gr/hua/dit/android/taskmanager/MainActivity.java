@@ -1,8 +1,11 @@
 package gr.hua.dit.android.taskmanager;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
         TaskDatabase.getInstance(this)
                 .taskDao()
                 .getAllTasks();
+
+        Intent service_intent = new Intent(this , StatusService.class );
+        startService(service_intent);
+
        }
+//        TaskDatabase.getAllTasks().observe(this, new Observer<List<Task>>()){
+//        @Override
+//        public void onChanged(List<Task> tasks){
+//                .taskDao()
+//                .getAllTasks();
+//        }
+
+//    }
+
 
 }

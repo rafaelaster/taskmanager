@@ -21,8 +21,9 @@ import gr.hua.dit.android.taskmanager.TaskDatabase;
 public class AddTaskActivity extends AppCompatActivity {
 
     private EditText shortNameInput, descriptionInput, startTimeInput, durationInput, locationInput;
-    private Spinner statusSpinner;
+//    private Spinner statusSpinner;
     private Button saveTaskButton;
+
 
     private TaskDatabase db;
 
@@ -37,25 +38,25 @@ public class AddTaskActivity extends AppCompatActivity {
         startTimeInput = findViewById(R.id.start_time);
         durationInput = findViewById(R.id.duration);
         locationInput = findViewById(R.id.location);
-        statusSpinner = findViewById(R.id.status_spinner);
+//        statusSpinner = findViewById(R.id.status_spinner);
         saveTaskButton = findViewById(R.id.btn_save_task);
 
         db = TaskDatabase.getInstance(this);
 
         // Populate Status Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,
-                getStatuses());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(adapter);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+//                android.R.layout.simple_spinner_item,
+//                getStatuses());
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        statusSpinner.setAdapter(adapter);
 
         // Save Task on Button Click
         saveTaskButton.setOnClickListener(v -> saveTask());
     }
 
-    private List<String> getStatuses() {
-        return Arrays.asList("recorded", "in-progress", "expired", "completed");
-    }
+//    private List<String> getStatuses() {
+//        return Arrays.asList("recorded", "in-progress", "expired", "completed");
+//    }
 
     private void saveTask() {
         String shortName = shortNameInput.getText().toString().trim();
@@ -63,8 +64,8 @@ public class AddTaskActivity extends AppCompatActivity {
         String startTime = startTimeInput.getText().toString().trim();
         String durationStr = durationInput.getText().toString().trim();
         String location = locationInput.getText().toString().trim();
-        String statusName = statusSpinner.getSelectedItem().toString();
-
+//        String statusName = statusSpinner.getSelectedItem().toString();
+//        String statusName = "recorded";
         // Validation
         if (shortName.isEmpty() || durationStr.isEmpty() || !isPositiveInteger(durationStr)) {
             Toast.makeText(this, "Please provide valid inputs.", Toast.LENGTH_SHORT).show();
@@ -73,13 +74,20 @@ public class AddTaskActivity extends AppCompatActivity {
 
         int duration = Integer.parseInt(durationStr);
 
-        // Insert Task
+//         Insert Task
         new Thread(() -> {
-            Status status = db.taskDao().getStatusByName(statusName);
+            Status status = new Status();
+            status.setStatusName("recorded");
+            db.statusDao().insertStatus(status);
             Task task = new Task(shortName, description, startTime, duration, status.getId(), location);
+            task.setStatusId(status.getId()); // Χρήση του status_id ως foreign key
             db.taskDao().insertTask(task);
+
             runOnUiThread(() -> Toast.makeText(this, "Task Saved!", Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> Toast.makeText(this, "Status Saved!", Toast.LENGTH_SHORT).show());
+
         }).start();
+
     }
 
     private boolean isPositiveInteger(String value) {
