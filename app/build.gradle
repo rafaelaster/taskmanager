@@ -42,5 +42,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:2.6.1"
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
-
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
 }
