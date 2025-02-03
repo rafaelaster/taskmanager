@@ -8,24 +8,31 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
+import android.content.Context;
 
 import gr.hua.dit.android.taskmanager.AddTaskActivity;
 import gr.hua.dit.android.taskmanager.R;import gr.hua.dit.android.taskmanager.TaskDatabase;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private RecyclerView recyclerView;
 
+    private TaskAdapter adapter;
+    private ArrayList<Task> tasks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerAdapter = new RecyclerAdapter();
         recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Button btnAddTask = findViewById(R.id.btn_add_task);
         btnAddTask.setOnClickListener(view -> {
@@ -33,14 +40,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        TaskDatabase.getInstance(this)
-                .taskDao()
-                .getAllTasks();
 
-        Intent service_intent = new Intent(this , StatusService.class );
-        startService(service_intent);
 
-       }
+//        startService(service_intent);
+//        adapter = new TaskAdapter(this, tasks);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
 //        TaskDatabase.getAllTasks().observe(this, new Observer<List<Task>>()){
 //        @Override
 //        public void onChanged(List<Task> tasks){
@@ -50,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    }
 
-
-    public void setRecyclerView(RecyclerView recyclerView) {
+//    PeriodicWorkRequest changeStatus = new PeriodicWorkRequest.Builder().build();
+//    public void setRecyclerView(RecyclerView recyclerView) {
 
     }
-}

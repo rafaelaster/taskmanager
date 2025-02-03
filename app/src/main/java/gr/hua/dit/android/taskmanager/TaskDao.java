@@ -20,5 +20,9 @@ public interface TaskDao {
 //    Status getStatusByName(String statusName);
 
     @Query("SELECT * FROM tasks")
-    LiveData<List<Task>> getAllTasks();
+    List<Task> getAllTasks();
+
+    @Query("SELECT *  FROM tasks WHERE id IN (:tasksIds) ")
+    List<Task> loadAllbyIds(int[] tasksIds);
+
 }

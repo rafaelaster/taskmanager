@@ -32,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".StatusService"></service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAfZ2W3qIINRc7gbCZtOTSXPb5m-PQy5cs"/>

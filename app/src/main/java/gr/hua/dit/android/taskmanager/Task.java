@@ -1,15 +1,10 @@
 package gr.hua.dit.android.taskmanager;
 
-import android.net.http.UrlRequest;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-
-import android.widget.ImageView;
-import android.widget.TextView;
 
 @Entity(tableName = "tasks",
         foreignKeys = @ForeignKey(entity = Status.class,
@@ -18,12 +13,6 @@ import android.widget.TextView;
                 onDelete = ForeignKey.CASCADE))
 public class Task {
 
-    private TextView name;
-
-    private ImageView baseline;
-
-//    name =  findViewById(R.id.taskTitle);
-//    baseline = findViewById(R.id.imageView);
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -31,6 +20,15 @@ public class Task {
     @ColumnInfo(name = "title")
     @NonNull
     private String title;
+
+    @NonNull
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
 
     @ColumnInfo(name = "description")
     private String description;
@@ -48,7 +46,7 @@ public class Task {
     private String location;
 
     // Getters and setters...
-    public Task(@NonNull String shortName, String description, String startTime, int duration, int statusId, String location) {
+    public Task(@NonNull String title, String description, String startTime, int duration, int statusId, String location) {
         this.title = title;
         this.description = description;
         this.startTime = startTime;
@@ -56,7 +54,7 @@ public class Task {
         this.statusId = statusId;
         this.location = location;
     }
-    public Task() {
+    public Task(String shortName, String description, String startTime, int duration, String statusName, String title) {
     }
     public String getDescription() {
         return description;
@@ -113,5 +111,18 @@ public class Task {
 
     public void setStatusId(int statusId) {
         this.statusId = statusId;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", duration=" + duration +
+                ", statusId=" + statusId +
+                ", location='" + location + '\'' +
+                '}';
     }
 }

@@ -8,21 +8,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.util.Arrays;
 import java.util.List;
-
-import gr.hua.dit.android.taskmanager.R;
-import gr.hua.dit.android.taskmanager.Task;
-import gr.hua.dit.android.taskmanager.TaskDatabase;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private EditText shortNameInput, descriptionInput, startTimeInput, durationInput, locationInput;
     private Spinner statusSpinner;
     private Button saveTaskButton;
-
-    private TaskDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +33,6 @@ public class AddTaskActivity extends AppCompatActivity {
         statusSpinner = findViewById(R.id.status_spinner);
         saveTaskButton = findViewById(R.id.btn_save_task);
 
-        db = TaskDatabase.getInstance(this);
-
         // Populate Status Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
@@ -52,7 +45,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private List<String> getStatuses() {
-        return Arrays.asList("in-progress", "expired", "completed");
+        return Arrays.asList("recorded", "in-progress", "expired", "completed");
     }
 
     private void saveTask() {
@@ -73,16 +66,14 @@ public class AddTaskActivity extends AppCompatActivity {
 
         // Insert Task
         new Thread(() -> {
-            Status status = new Status();
-            status.setStatusName("recorded");
-            db.statusDao().insertStatus(status);
-            Task task = new Task(shortName, description, startTime, duration, status.getId(), location);
-            task.setStatusId(status.getId()); // Use status_id as foreign key
+            TaskDatabase db = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task.sqlite")
+                    .build();
+            Task task = new Task(shortName, description, startTime, duration, statusName, location);
             db.taskDao().insertTask(task);
-
-            runOnUiThread(() -> Toast.makeText(this, "Task Saved!", Toast.LENGTH_SHORT).show());
-            runOnUiThread(() -> Toast.makeText(this, "Status Saved!", Toast.LENGTH_SHORT).show());
-
+            runOnUiThread(() -> {
+                Toast.makeText(AddTaskActivity.this, "Task Saved!", Toast.LENGTH_SHORT).show();
+                finish(); // Close the activity after saving
+            });
         }).start();
     }
 

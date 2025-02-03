@@ -44,4 +44,12 @@ public class Status {
     public Status(@NonNull String statusName) {
         this.statusName = statusName;
     }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "id=" + id +
+                ", statusName='" + statusName + '\'' +
+                '}';
+    }
 }
