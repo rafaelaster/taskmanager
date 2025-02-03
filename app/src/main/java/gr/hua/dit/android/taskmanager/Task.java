@@ -8,18 +8,29 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import android.widget.ImageView;
+import android.widget.TextView;
+
 @Entity(tableName = "tasks",
         foreignKeys = @ForeignKey(entity = Status.class,
                 parentColumns = "id",
                 childColumns = "statusId",
                 onDelete = ForeignKey.CASCADE))
 public class Task {
+
+    private TextView name;
+
+    private ImageView baseline;
+
+//    name =  findViewById(R.id.taskTitle);
+//    baseline = findViewById(R.id.imageView);
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "short_name")
+    @ColumnInfo(name = "title")
     @NonNull
-    private String shortName;
+    private String title;
 
     @ColumnInfo(name = "description")
     private String description;
@@ -38,7 +49,7 @@ public class Task {
 
     // Getters and setters...
     public Task(@NonNull String shortName, String description, String startTime, int duration, int statusId, String location) {
-        this.shortName = shortName;
+        this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.duration = duration;
@@ -81,11 +92,11 @@ public class Task {
 
     @NonNull
     public String getShortName() {
-        return shortName;
+        return title;
     }
 
     public void setShortName(@NonNull String shortName) {
-        this.shortName = shortName;
+        this.title = title;
     }
 
     public String getStartTime() {
