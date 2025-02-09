@@ -1,5 +1,6 @@
 package gr.hua.dit.android.taskmanager;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -14,12 +15,14 @@ public interface TaskDao {
     @Insert
     void insertTask(Task task);
 
-    @Insert
-    void insertStatus(Status status);
+//    void insertStatus(Status status);
 
-    @Query("SELECT * FROM statuses WHERE status_name = :statusName")
-    Status getStatusByName(String statusName);
+//    Status getStatusByName(String statusName);
 
     @Query("SELECT * FROM tasks")
     List<Task> getAllTasks();
+
+    @Query("SELECT *  FROM tasks WHERE id IN (:tasksIds) ")
+    List<Task> loadAllbyIds(int[] tasksIds);
+
 }

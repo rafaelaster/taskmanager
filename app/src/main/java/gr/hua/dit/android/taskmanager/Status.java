@@ -6,16 +6,22 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "statuses")
+@Entity(tableName = "status")
 public class Status {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "status_name")
+    @ColumnInfo(name = "statusName")
     @NonNull
     private String statusName;
 
+    public Status() {
+
+    }
+
+
     // Constructor, getters, setters...
+
 
     public int getId() {
         return id;
@@ -29,16 +35,21 @@ public class Status {
     public String getStatusName() {
         return statusName;
     }
-    @Ignore
+
     public void setStatusName(@NonNull String statusName) {
         this.statusName = statusName;
     }
-    @Ignore
-    public Status(int id) {
-        this.id = id;
-    }
+
 
     public Status(@NonNull String statusName) {
         this.statusName = statusName;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "id=" + id +
+                ", statusName='" + statusName + '\'' +
+                '}';
     }
 }

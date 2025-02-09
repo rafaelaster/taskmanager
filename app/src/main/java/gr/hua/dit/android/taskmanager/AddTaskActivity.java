@@ -1,7 +1,5 @@
-
 package gr.hua.dit.android.taskmanager;
 
-import android.net.http.UrlRequest;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,21 +8,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.util.Arrays;
 import java.util.List;
-
-import gr.hua.dit.android.taskmanager.R;
-import gr.hua.dit.android.taskmanager.Task;
-import gr.hua.dit.android.taskmanager.TaskDatabase;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     private EditText shortNameInput, descriptionInput, startTimeInput, durationInput, locationInput;
     private Spinner statusSpinner;
     private Button saveTaskButton;
-
-    private TaskDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +32,6 @@ public class AddTaskActivity extends AppCompatActivity {
         locationInput = findViewById(R.id.location);
         statusSpinner = findViewById(R.id.status_spinner);
         saveTaskButton = findViewById(R.id.btn_save_task);
-
-        db = TaskDatabase.getInstance(this);
 
         // Populate Status Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -75,10 +66,14 @@ public class AddTaskActivity extends AppCompatActivity {
 
         // Insert Task
         new Thread(() -> {
-            Status status = db.taskDao().getStatusByName(statusName);
-            Task task = new Task(shortName, description, startTime, duration, status.getId(), location);
+            TaskDatabase db = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task.sqlite")
+                    .build();
+            Task task = new Task(shortName, description, startTime, duration, statusName, location);
             db.taskDao().insertTask(task);
-            runOnUiThread(() -> Toast.makeText(this, "Task Saved!", Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> {
+                Toast.makeText(AddTaskActivity.this, "Task Saved!", Toast.LENGTH_SHORT).show();
+                finish(); // Close the activity after saving
+            });
         }).start();
     }
 
